@@ -66,7 +66,7 @@ def post_user(request):
             return HttpResponse('Server ERROR...', status=500)
 
 
-
+# to return requested users.
 def get_users_all(request):
         try:
             if request.method == 'GET':
