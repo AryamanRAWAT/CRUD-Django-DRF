@@ -1,6 +1,6 @@
 Assignment_datapeace
 
-Brief description or purpose of your project.
+The project is a Django-based web application that provides API endpoints to manage user details. It includes functionality to create, retrieve, update, and delete user information. The project utilizes Django's ORM for database operations, allowing users to interact with a database of user details through API calls.
 
 Setup and Installation:
 
@@ -31,11 +31,6 @@ Setup and Installation:
      source venv/bin/activate
      ```
 
-4. Install Dependencies:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
 
 5. Apply Database Migrations:
 
