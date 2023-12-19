@@ -113,9 +113,9 @@ def get_users_all(request):
                 if name:
                     users = users.filter(first_name__icontains=name) | users.filter(last_name__icontains=name)   #the pipe operator '|' is used to combine results of filters. '__icontains' returns all names containing substrin(name) and it is case insensitive.  
 
-                print('2>', users)
+                print('2>', sort)
                 if len(sort)>0:                  
-                    users.order_by(sort)                #list of users according to user desired attribute (age,id,etc.).
+                    users = users.order_by(sort)                #list of users according to user desired attribute (age,id,etc.).
                     # print('3>', users)
                 
                 print('4>', users)
