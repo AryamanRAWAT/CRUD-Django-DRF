@@ -46,6 +46,8 @@ Setup and Installation:
 
    The server will be running at http://127.0.0.1:8000/.
 
+API DOCUMENTATION AT: https://documenter.getpostman.com/view/26169620/2s9Ykoe2Hh
+
 ## API Endpoints
 
 ### 1. Create a New User
