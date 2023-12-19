@@ -7,7 +7,7 @@ from django.core.paginator import Paginator,EmptyPage
 from api.models import user_details
 from django.views.decorators.csrf import csrf_exempt
 import traceback
-
+from django.db.models import Q
 #to check wheter the email or id already exists in db. If not then it save data in db else skips and return a list containing the conflicting attributes.
 def db_check_save(data):
                 uid = int(data.get('id'))                    # get() builtin method for dictionary that returns the value of the key passed.
@@ -20,7 +20,7 @@ def db_check_save(data):
                 zip = int(data.get('zip'))
                 email = data.get('email')
                 web = data.get('web')                   
-                existing_user = user_details.objects.filter(email=email,id=uid).first()  #the filter() method on a Django ORM to query the database and retrieve a user with a specific email and id.       
+                existing_user = user_details.objects.filter(Q(email=email) | Q(id=uid)).first()  #the filter() method on a Django ORM to query the database and retrieve a user with a specific email or id.       
 
                 print('db id>>>>',existing_user)
                 if existing_user is not None:               # if existing_user is not none that means either user id or user mail already exists in db.
