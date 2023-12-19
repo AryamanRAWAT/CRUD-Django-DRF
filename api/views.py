@@ -224,9 +224,44 @@ def delete_user(request,uid):                           #this method deletes a s
 def delete_all(request):                                #this method deletes all user.
     if request.method == 'DELETE':
         try:
+            first_name = request.GET.get('first_name','')
+            last_name = request.GET.get('last_name','')
+            age_start = int(request.GET.get('age_start', 0))  # Default value of 0 if not provided
+            age_end = int(request.GET.get('age_end', 0))
+            start_id = int(request.GET.get('start_id', 0))  
+            end_id = int(request.GET.get('end_id', 0))  
+
             users = user_details.objects.all()
+
+            # Filter based on provided parameters
+            if first_name:
+                users = users.filter(first_name__iexact=first_name)     # case-insensitive matching for first_name.
+            if last_name:
+                users = users.filter(last_name__iexact=last_name)       # case-insensitive matching for last_name.
+            if age_start < age_end:
+                users = users.filter(age__gte=age_start, age__lte=age_end)      #__gte filters all ages greater than or eaqual to age_start.
+            if start_id < end_id:
+                users = users.filter(id__gte=start_id, id__lte=end_id)          #__lte filterd all ids less than or eaqual to end_id.
+
+            # Delete filtered entries
+            
+            user_list = []
+            for user in users:
+                user_dic = {
+                    'id' : user.id,
+                    'first_name' : user.first_name,
+                    'last_name' : user.last_name,
+                    'email' : user.email,
+                    'age' : user.age,
+                }
+                user_list.append(user_dic)
+            print(user_list)
             users.delete()
-            return HttpResponse('All Entries Deleted!', status=200)
+            if user_list:
+                return HttpResponse('Entries Deleted!', status=200)
+            else:
+                return HttpResponse('Users does not exists!', status=400)
+            
         
         except:
             print(traceback.format_exc())
