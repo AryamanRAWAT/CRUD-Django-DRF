@@ -44,7 +44,7 @@ Setup and Installation:
    python manage.py runserver
    ```
 
-   The server will be running at http://127.0.0.1:8000/.
+   The server will be running at aryamanrawat2000.pythonanywhere.com/.
 
 API DOCUMENTATION AT: https://documenter.getpostman.com/view/26169620/2s9Ykoe2Hh
 
