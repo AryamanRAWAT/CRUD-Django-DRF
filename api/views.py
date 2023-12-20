@@ -2,7 +2,6 @@ from django.http import JsonResponse
 from django.shortcuts import render, HttpResponse
 import json
 from django.views import View
-from api.cred import *
 from django.core.paginator import Paginator,EmptyPage
 from api.models import user_details
 from django.views.decorators.csrf import csrf_exempt
