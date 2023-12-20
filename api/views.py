@@ -109,7 +109,7 @@ def get_users_all(request):
                 user_lst = []                               #an empty list that will contain entries matching the query.
                 print('1>', users)
                 if name:
-                    users = users.filter(first_name__icontains=name) | users.filter(last_name__icontains=name)   #the pipe operator '|' is used to combine results of filters. '__icontains' returns all names containing substrin(name) and it is case insensitive.  
+                    users = users.filter(first_name__icontains=name) | users.filter(last_name__icontains=name)   #the pipe operator '|' is used to combine results of filters. '__icontains' returns all names containing substring(name) and it is case insensitive.  
 
                 print('2>', sort)
                 if len(sort)>0:                  
