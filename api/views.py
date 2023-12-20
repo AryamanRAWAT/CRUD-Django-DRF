@@ -1,7 +1,6 @@
 from django.http import JsonResponse
-from django.shortcuts import render, HttpResponse
-import json
-from django.views import View
+from django.shortcuts import HttpResponse
+import json                                             #JavaScript Object Notation
 from django.core.paginator import Paginator,EmptyPage
 from api.models import user_details
 from django.views.decorators.csrf import csrf_exempt
