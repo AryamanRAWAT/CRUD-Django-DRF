@@ -8,8 +8,6 @@ import traceback
 from api.utils import db_check_save
 
 class POST_user: 
-    def test():
-        pass
     @csrf_exempt                            # it is a Django decorator used to exempt a view or function from the requirement of including a CSRF token. 
     # to create a new user.
     def post_user(request): 
