@@ -1,11 +1,20 @@
+# from django
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse
-import json                                             #JavaScript Object Notation
-from django.core.paginator import Paginator,EmptyPage
-from api.models import user_details
 from django.views.decorators.csrf import csrf_exempt
-import traceback
+from django.core.paginator import Paginator,EmptyPage
+
+#from drf
+from rest_framework import viewsets
+
+#from local app 'api'
+from api.models import user_details
 from api.utils import db_check_save
+from api.serializers import User_detailsSerializer
+
+# python modules
+import traceback
+import json                                             #JavaScript Object Notation
 
 class POST_user:                    
     @csrf_exempt                            # it is a Django decorator used to exempt a view or function from the requirement of including a CSRF token. 
@@ -53,7 +62,7 @@ class POST_user:
 
 class GET_user:
     # to return requested users.
-    def get_users_all(request):
+    def get_users_all(self,request):
             try:
                 if request.method == 'GET':            #if the method is GET then only will it work.
                     page_get = int(request.GET.get('page',1))   #retrieves the value of the 'page' parameter from the request's GET parameters, converting it to an integer with a default value of 1. This parameter tells the code which page of entries are to be shown.
@@ -62,7 +71,6 @@ class GET_user:
                     sort = request.GET.get('sort','')           #variable used for sort the list of users according to user desired attribute (age,id,etc.). By default it is in ascending order but if '-' is at the front(eg:'-age') then the order is descending.
                     print(page_get,limit,name,sort)
                     users = user_details.objects.all()          #retrieves all entries from the table
-                    user_lst = []                               #an empty list that will contain entries matching the query.
                     print('1>', users)
                     if name:
                         users = users.filter(first_name__icontains=name) | users.filter(last_name__icontains=name)   #the pipe operator '|' is used to combine results of filters. '__icontains' returns all names containing substring(name) and it is case insensitive.  
@@ -74,22 +82,8 @@ class GET_user:
                     
                     print('4>', users)
 
-
-                    for user in users:
-                        user_dic = {                        
-                        'id' : user.id,
-                        'first_name' : user.first_name,
-                        'last_name' : user.last_name,
-                        'company_name' : user.company_name,
-                        'city' : user.city,
-                        'state' : user.state,
-                        'zip' : user.zip,
-                        'email' : user.email,
-                        'web' : user.web,
-                        'age' : user.age,
-                        }                                   #creating a list of dictionaries (user_lst), where each dictionary represents a user's attributes extracted from the queryset fields. 
-                        user_lst.append(user_dic)
-                    p = Paginator(user_lst,limit)           #paginating the list of user dictionaries (user_lst) with a specified limit of items per page (limit). 
+                    serializer = User_detailsSerializer(self.users)
+                    p = Paginator(serializer,limit)           #paginating the list of user dictionaries (user_lst) with a specified limit of items per page (limit). 
                     res_page = p.page(page_get)             #res_page holds the items at the specified page.
                     return JsonResponse(res_page.object_list, safe=False, status=200)  # safe=False argument is used when the data to be serialized is not a dictionary but a list.
 
@@ -101,24 +95,13 @@ class GET_user:
                 return HttpResponse('Server Error', status=500)
             
     #method to return requested entry to the user.
-    def get_user(request,uid):                              #this method requires 2 arguments http request and user id by which we find the requested user and return it to the user.
+    def get_user(self,request,uid):                              #this method requires 2 arguments http request and user id by which we find the requested user and return it to the user.
         if request.method == 'GET':
             try:
                 user = user_details.objects.get(id=uid)
-                user_dic = {
-                        'id' : uid,
-                        'first_name' : user.first_name,
-                        'last_name' : user.last_name,
-                        'company_name' : user.company_name,
-                        'city' : user.city,
-                        'state' : user.state,
-                        'zip' : user.zip,
-                        'email' : user.email,
-                        'web' : user.web,
-                        'age' : user.age,
-                    }
-                print(user_dic)
-                return JsonResponse(user_dic,status=200)            #JsonResponse is used to send basic json data.
+                serializer = User_detailsSerializer(self.user)
+                print(serializer)
+                return JsonResponse(serializer,status=200)            #JsonResponse is used to send basic json data.
             
             except(user_details.DoesNotExist):                      #if the user does not exists this resposne will be sent.
                 return HttpResponse('User Does Not Exsits.', status=500)
