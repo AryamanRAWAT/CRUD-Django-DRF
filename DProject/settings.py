@@ -74,12 +74,12 @@ WSGI_APPLICATION = 'DProject.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
+# edited login
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'dp_assignment',
-		'USER': 'AR',
+		'USER': 'ARK',
         'PASSWORD': 'Admin',
         'HOST': 'localhost',
         'PORT': '5432',
